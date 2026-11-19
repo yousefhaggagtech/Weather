@@ -15,4 +15,4 @@ Normal execution (`npm start`) uses valid forecast endpoints for every city. Aft
 
 Mapping and classification perform no network requests, logging, or I/O. The risk rules are not real delivery safety standards.
 
-Run `npm test` to compile with strict TypeScript settings and execute the deterministic mapping, classification, and CLI tests with Node's built-in test runner. CLI tests stub fetch in isolated subprocesses to verify normal execution, simulation, and network failures without relying on external services. Run `npm run typecheck` for compilation checks without emitting files.
+Run `npm test` to compile with strict TypeScript settings and execute deterministic JavaScript `.mjs` tests against `dist/` with Node's built-in test runner and assertions. Tests cover mapping, classification boundaries, runtime validation, HTTP/network/JSON failures, asynchronous fetch success, concurrent monitoring, and request counts. Fetch mocks and controlled promises keep tests offline; isolated subprocesses verify CLI behavior and handling of rejected promises with `--unhandled-rejections=strict`. Run `npm run typecheck` for compilation checks without emitting files.
