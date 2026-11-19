@@ -1,12 +1,45 @@
 import { CITIES } from "./cities.js";
 import { fetchWeather } from "./fetch-weather.js";
+import { monitorWeather } from "./monitor-weather.js";
 import { buildWeatherUrl } from "./weather-url.js";
 
-const cairo = CITIES.find((city) => city.name === "Cairo");
-if (!cairo) {
-  throw new Error("Cairo is missing from the city configuration.");
+async function main(): Promise<void> {
+  const { reports, failures, summary } = await monitorWeather(CITIES, (city) => {
+    const endpoint = buildWeatherUrl(city.latitude, city.longitude).toString();
+    return fetchWeather(endpoint, city.name);
+  });
+
+  console.log("Weather Monitoring Report\n");
+
+  for (const weather of reports) {
+    console.log(weather.city);
+    console.log(`  Temperature: ${weather.temperature} °C`);
+    console.log(`  Humidity: ${weather.humidity}%`);
+    console.log(`  Wind speed: ${weather.windSpeed} km/h`);
+    console.log(`  Raining: ${weather.isRaining ? "Yes" : "No"}`);
+    console.log(`  Delivery status: ${weather.deliveryStatus}\n`);
+  }
+
+  if (reports.length === 0) {
+    console.log("No weather reports available.\n");
+  }
+
+  if (failures.length > 0) {
+    console.log("Failed requests:");
+    for (const failure of failures) {
+      console.log(`  ${failure.city}: ${failure.message}`);
+    }
+    console.log();
+  }
+
+  console.log("Summary");
+  console.log(`  Total requests: ${summary.totalRequests}`);
+  console.log(`  Successful requests: ${summary.successfulRequests}`);
+  console.log(`  Failed requests: ${summary.failedRequests}`);
 }
 
-const endpoint = buildWeatherUrl(cairo.latitude, cairo.longitude).toString();
-const weather = await fetchWeather(endpoint, cairo.name);
-console.log(weather);
+main().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : "Unexpected error.";
+  console.error(`Weather monitoring could not complete: ${message}`);
+  process.exitCode = 1;
+});
