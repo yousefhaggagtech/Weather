@@ -11,6 +11,8 @@ The project uses small TypeScript modules in `src/`:
 - `monitor-weather.ts` orchestrates independent requests with `Promise.allSettled`, preserving city association and collecting processed reports, per-city errors, and request totals after every request settles. It accepts a city list and an injected loader, keeping orchestration independent of API integration, mapping, and terminal output. The async request wrapper also turns synchronous loader errors into settled rejections.
 - `index.ts` connects the monitor to the existing city configuration, URL builder, and API integration for Cairo, Alexandria, and Aswan, then prints weather details, failures, and a final summary. A top-level rejection handler reports unexpected orchestration errors.
 
+Normal execution (`npm start`) uses valid forecast endpoints for every city. After building, run `npm start -- --simulate-failure` to replace only Alexandria's endpoint path with `/v1/invalid-forecast`. All three requests still use native fetch and the same `Promise.allSettled` monitor; HTTP or network failures are logged per city alongside successful reports and final counts. Live results depend on external API availability.
+
 Mapping and classification perform no network requests, logging, or I/O. The risk rules are not real delivery safety standards.
 
-Run `npm test` to compile with strict TypeScript settings and execute the deterministic mapping and classification tests with Node's built-in test runner. Run `npm run typecheck` for compilation checks without emitting files.
+Run `npm test` to compile with strict TypeScript settings and execute the deterministic mapping, classification, and CLI tests with Node's built-in test runner. CLI tests stub fetch in isolated subprocesses to verify normal execution, simulation, and network failures without relying on external services. Run `npm run typecheck` for compilation checks without emitting files.

@@ -4,9 +4,13 @@ import { monitorWeather } from "./monitor-weather.js";
 import { buildWeatherUrl } from "./weather-url.js";
 
 async function main(): Promise<void> {
+  const simulateFailure = process.argv.slice(2).includes("--simulate-failure");
   const { reports, failures, summary } = await monitorWeather(CITIES, (city) => {
-    const endpoint = buildWeatherUrl(city.latitude, city.longitude).toString();
-    return fetchWeather(endpoint, city.name);
+    const endpoint = buildWeatherUrl(city.latitude, city.longitude);
+    if (simulateFailure && city.name === "Alexandria") {
+      endpoint.pathname = "/v1/invalid-forecast";
+    }
+    return fetchWeather(endpoint.toString(), city.name);
   });
 
   console.log("Weather Monitoring Report\n");
