@@ -490,8 +490,3 @@ These are possible next steps; they are **not implemented** in the current proje
 
 Each addition should preserve the existing boundary between provider-specific data and the internal application model. A real operational system would also need independently established business and safety requirements beyond this exercise's simplified classifications.
 
-## ملخص بالمصري
-
-المشروع ده تطبيق تعليمي بـ Node.js وTypeScript، بيجيب بيانات الطقس للقاهرة وإسكندرية وأسوان، ويتأكد من شكلها، وبعد كده يحولها لتقرير موحّد. كل طلب بيشتغل بشكل مستقل، وبنستخدم `Promise.allSettled` عشان لو طلب مدينة فشل، نفضل نعرض نتايج المدن اللي نجحت ونوضح الأخطاء.
-
-الفكرة إننا نفهم الـ interfaces، والفرق بين فحص الأنواع وقت الـ compilation والتحقق من البيانات وقت التشغيل، وكمان `async/await` والـ event loop وفصل المسؤوليات. تصنيفات التوصيل هنا للتعلّم بس، ومينفعش نعتمد عليها في قرارات سلامة حقيقية.
