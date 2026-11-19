@@ -476,17 +476,4 @@ This project connects the Module 3 concepts in a practical workflow:
 - **Fault tolerance:** collect independent outcomes with `Promise.allSettled`, preserve city identity, and report partial success honestly.
 - **Separation and testing:** keep classification, mapping, integration, coordination, and presentation in focused modules that can be tested without a live provider.
 
-## 15. Future Improvements
-
-These are possible next steps; they are **not implemented** in the current project:
-
-- **Express API:** expose structured monitoring results through HTTP endpoints while reusing the internal model and monitor.
-- **Caching:** reduce repeat provider calls with an explicit expiry and a clear indication when a report uses cached data.
-- **Timeouts and retry policies:** add request deadlines, cancellation, bounded exponential backoff with jitter, and rules for which failures are retryable.
-- **Scheduled monitoring:** run checks at defined intervals, handle overlapping runs, and decide how to report persistent failures.
-- **Persistent storage:** retain reports and timestamps for historical analysis, with deliberate schema, retention, and migration choices.
-- **Dashboards:** display successful reports, missing cities, freshness, and provider failures without presenting unavailable data as current.
-- **Stronger domain validation:** check ranges, timestamps, and units, and retain observation time in the internal model so consumers can assess freshness.
-
-Each addition should preserve the existing boundary between provider-specific data and the internal application model. A real operational system would also need independently established business and safety requirements beyond this exercise's simplified classifications.
 
